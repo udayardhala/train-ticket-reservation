@@ -27,6 +27,6 @@ jobs:
       run: mvn clean package
 
     - name: verify war file
-      run: ls-la target/
+      run: ls -la target/
 
 
