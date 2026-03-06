@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: trainbook-war
-        path: TrainBook-1.0.0-SNAPSHOT.war
+        path: target/TrainBook-1.0.0-SNAPSHOT.war
 
   deploy:
     needs: build
@@ -40,8 +40,13 @@ jobs:
     environment: pre-prod
 
     steps:
+
+      - name: download war file
+        uses: actions/download-artifact@v4
+          with:
+            name: trainbook-war
       - name: deploy trainbook-war
         run: |
           curl -v -u ${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }} \
-          -T TrainBook-1.0.0-SNAPSHOT.war \
+          -T target/TrainBook-1.0.0-SNAPSHOT.war \
           "http://${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/TrainBook&update=true"  
