@@ -43,10 +43,10 @@ jobs:
 
       - name: download war file
         uses: actions/download-artifact@v4
-          with:
-            name: trainbook-war
+        with:
+          name: trainbook-war
       - name: deploy trainbook-war
         run: |
           curl -v -u ${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }} \
-          -T target/TrainBook-1.0.0-SNAPSHOT.war \
+          -T TrainBook-1.0.0-SNAPSHOT.war \
           "http://${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/TrainBook&update=true"  
