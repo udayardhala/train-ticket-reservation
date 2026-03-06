@@ -2,6 +2,8 @@ name: Pre_prod_env_tomcat_deploy
 on: 
   push:
     branches: ["master"]
+    paths:
+      - ".github/workflows/pre_prod_env_tomcat_deploy.yaml"
 
 jobs:
   build:
