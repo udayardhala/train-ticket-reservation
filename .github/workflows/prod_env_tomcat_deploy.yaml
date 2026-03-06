@@ -1,0 +1,54 @@
+name: Multi_env_tomcat_deploy
+on: 
+  push:
+    branches: ["master"]
+    paths:
+      - ".github/workflows/prod_env_tomcat_deploy.yaml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout code
+      uses: actions/checkout@v3
+
+    - name: set up jave
+      uses: actions/setup-java@v3
+      with:
+        distribution: 'temurin'
+        java-version: '17'
+
+    - name: validate Maven
+      run: mvn validate
+
+    - name: compile Maven
+      run: mvn compile
+
+    - name: package with Maven
+      run: mvn clean package
+
+    - name: verify war file
+      run: ls -la target/
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: trainbook-war
+        path: target/TrainBook-1.0.0-SNAPSHOT.war
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: prod
+
+    steps:
+
+      - name: download war file
+        uses: actions/download-artifact@v4
+        with:
+          name: trainbook-war
+      - name: deploy trainbook-war
+        run: |
+          curl -v -u ${{ secrets.TOMCAT_USER }}:${{ secrets.TOMCAT_PASSWORD }} \
+          -T TrainBook-1.0.0-SNAPSHOT.war \
+          "http://${{ secrets.TOMCAT_HOST }}/manager/text/deploy?path=/TrainBook&update=true"  
