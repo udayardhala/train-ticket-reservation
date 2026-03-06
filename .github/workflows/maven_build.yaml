@@ -27,7 +27,9 @@ jobs:
       run: mvn clean package
 
     - name: verify war file
-      run: ls -la target/
+      run: |
+          ls -la target/
+          pwd
 
     - name: Deploy to Tomcat
       run: |
