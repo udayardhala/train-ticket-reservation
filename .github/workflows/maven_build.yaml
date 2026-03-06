@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: trainbook-war
-        path: target/TrainBook-1.0.0-SNAPSHOT.war
+        path: TrainBook-1.0.0-SNAPSHOT.war
 
   deploy:
     needs: build
